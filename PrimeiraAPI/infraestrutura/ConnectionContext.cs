@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PrimeiraAPI.Model;
+using PrimeiraAPI.Domain.Model;
 
 namespace PrimeiraAPI.infraestrutura
 {

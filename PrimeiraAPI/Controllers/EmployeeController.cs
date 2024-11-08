@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PrimeiraAPI.Model;
-using PrimeiraAPI.ViewModel;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PrimeiraAPI.Application.ViewModel;
+using PrimeiraAPI.Domain.Model;
 
 namespace PrimeiraAPI.Controllers
 {
@@ -9,12 +10,15 @@ namespace PrimeiraAPI.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly ILogger<EmployeeController> _logger;
 
-        public EmployeeController(IEmployeeRepository employeeRepository)
+        public EmployeeController(IEmployeeRepository employeeRepository, ILogger<EmployeeController> logger)
         {
             _employeeRepository = employeeRepository ?? throw new ArgumentNullException(nameof(employeeRepository));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Add([FromForm]EmployeeViewModel employeeView)
         {
@@ -31,6 +35,7 @@ namespace PrimeiraAPI.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPost]
         [Route("{id}/download")]
         public IActionResult DownloadPhoto(int id)
@@ -43,9 +48,13 @@ namespace PrimeiraAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(int pageNumber, int pageQuantity)
         {
-            var employess = _employeeRepository.Get();
+            _logger.Log(LogLevel.Error, "Teve um Erro");
+
+            var employess = _employeeRepository.Get(pageNumber, pageQuantity);
+
+            _logger.LogInformation("Teste");
 
             return Ok(employess);
         }

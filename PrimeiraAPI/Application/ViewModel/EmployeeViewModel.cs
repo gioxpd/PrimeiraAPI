@@ -1,4 +1,4 @@
-﻿namespace PrimeiraAPI.ViewModel
+﻿namespace PrimeiraAPI.Application.ViewModel
 {
     public class EmployeeViewModel
     {
